@@ -35,7 +35,7 @@ func TestHandlerGetTotalPods(t *testing.T) {
 				},
 			},
 			wantStatusCode: http.StatusOK,
-			wantResponse:   []byte("{\"status\": 200,\"total\": 100}\n"),
+			wantResponse:   []byte("{\"status\":200,\"total\":100}\n"),
 		},
 	}
 	for name, tc := range testCases {
@@ -53,7 +53,7 @@ func TestHandlerGetTotalPods(t *testing.T) {
 				t.Fatalf("%v: GetTotalPod(w,r) got %v; want %v", name, got, want)
 			}
 			if got, want := w.Body.Bytes(), tc.wantResponse; !reflect.DeepEqual(got, want) {
-				t.Fatalf("%v; GetTotalPods(w,r) got %v; want %v", name, got, want)
+				t.Fatalf("%v; GetTotalPods(w,r) got %v; want %v", name, string(got), string(want))
 			}
 		})
 	}
