@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pods
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pods
+  template:
+    metadata:
+      labels:
+        app: pods
+    spec:
+      containers:
+      - image: okteto.dev/go-hello-world:1.0.0
+        name: pods
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pods
+spec:
+  type: ClusterIP
+  ports:
+  - name: "pods"
+    port: 8080
+  selector:
+    app: pods
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pods
+  namespace: mig-elgt
+  annotations:
+    dev.okteto.com/generate-host: pods
+spec:
+  rules:
+  - http:
+      paths:
+      - backend:
+          service:
+            name: pods
+            port:
+              number: 8080
+        path: /
+        pathType: ImplementationSpecific
