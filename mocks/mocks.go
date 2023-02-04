@@ -1,4 +1,4 @@
-package pods
+package mocks
 
 import pods "github.com/mig-elgt/okteto-pods"
 

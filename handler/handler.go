@@ -4,10 +4,13 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	pods "github.com/mig-elgt/okteto-pods"
 )
 
 // handler defines a HTTP Handler to perform POD API Requests
-type handler struct{}
+type handler struct {
+	podsvc pods.PodLister
+}
 
 // New creates a new HTTP Handler
 func New() http.Handler {
