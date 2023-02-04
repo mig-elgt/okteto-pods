@@ -13,13 +13,11 @@ type handler struct {
 }
 
 // New creates a new HTTP Handler
-func New() http.Handler {
+func New(podsvc pods.PodLister) http.Handler {
 	r := mux.NewRouter()
-	h := handler{}
-	r.HandleFunc("/hello", h.HelloWorld).Methods("GET")
-	return r
-}
 
-func (handler) HelloWorld(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("hello world"))
+	h := handler{podsvc}
+	r.HandleFunc("/pods/total", h.GetTotalPods).Methods("GET")
+
+	return r
 }

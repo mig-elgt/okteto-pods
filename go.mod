@@ -6,7 +6,8 @@ require (
 	github.com/gorilla/mux v1.8.0
 	github.com/mig-elgt/sender v0.0.0-20230112184848-f581432c6de3
 	github.com/pkg/errors v0.9.1
-	google.golang.org/grpc v1.31.0
+	github.com/sirupsen/logrus v1.9.0
+	k8s.io/apimachinery v0.26.1
 	k8s.io/client-go v0.26.1
 )
 
@@ -28,7 +29,6 @@ require (
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
-	github.com/sirupsen/logrus v1.9.0 // indirect
 	golang.org/x/net v0.3.1-0.20221206200815-1e63c2f08a10 // indirect
 	golang.org/x/oauth2 v0.0.0-20220223155221-ee480838109b // indirect
 	golang.org/x/sys v0.3.0 // indirect
@@ -41,7 +41,6 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	k8s.io/api v0.26.1 // indirect
-	k8s.io/apimachinery v0.26.1 // indirect
 	k8s.io/klog/v2 v2.80.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20221012153701-172d655c2280 // indirect
 	k8s.io/utils v0.0.0-20221107191617-1a15be271d1d // indirect
