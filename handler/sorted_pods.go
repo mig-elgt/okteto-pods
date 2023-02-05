@@ -13,6 +13,7 @@ import (
 type pod struct {
 	Name     string `json:"name"`
 	Restarts int32  `json:"restarts"`
+	Status   string `json:"status,omitempty"`
 	Age      string `json:"age"`
 }
 
@@ -50,6 +51,7 @@ func (h handler) GetSortedPods(w http.ResponseWriter, r *http.Request) {
 	for _, p := range pods {
 		podList = append(podList, pod{
 			Name:     p.Name,
+			Status:   p.Status,
 			Restarts: p.Restarts,
 			Age:      p.Age.String(),
 		})

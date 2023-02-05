@@ -1,14 +1,17 @@
 package main
 
 import (
+	"context"
 	"flag"
 	"fmt"
 	"net/http"
+	"os"
+	"os/signal"
 
 	"github.com/mig-elgt/okteto-pods/handler"
 	"github.com/mig-elgt/okteto-pods/kubernetes"
 	"github.com/mig-elgt/okteto-pods/sort"
-	"github.com/sirupsen/logrus"
+	log "github.com/sirupsen/logrus"
 )
 
 func main() {
@@ -17,12 +20,30 @@ func main() {
 
 	k8s, err := kubernetes.New()
 	if err != nil {
-		logrus.Fatalf("could not create kubernetes client: %v", err)
+		log.Fatalf("could not create kubernetes client: %v", err)
 	}
 	h := handler.New(k8s, sort.New())
 
-	fmt.Println("Server running al localhost: ", *port)
-	if err := http.ListenAndServe(fmt.Sprintf(":%d", *port), h); err != nil {
-		panic(err)
+	srv := http.Server{
+		Addr:    fmt.Sprintf(":%d", *port),
+		Handler: h,
 	}
+
+	idleConnsClosed := make(chan struct{})
+	go func() {
+		sigint := make(chan os.Signal, 1)
+		signal.Notify(sigint, os.Interrupt)
+		<-sigint
+		if err := srv.Shutdown(context.Background()); err != nil {
+			log.Printf("HTTP server Shutdown: %v", err)
+		}
+		close(idleConnsClosed)
+	}()
+
+	log.Infof("Server running al localhost: %v", *port)
+	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
+		log.Fatalf("HTTP server ListenAndServe: %v", err)
+	}
+
+	<-idleConnsClosed
 }
