@@ -10,13 +10,17 @@ import (
 // handler defines a HTTP Handler to perform POD API Requests
 type handler struct {
 	podsvc pods.PodLister
+	sorter pods.Sorter
 }
 
 // New creates a new HTTP Handler
-func New(podsvc pods.PodLister) http.Handler {
+func New(podsvc pods.PodLister, s pods.Sorter) http.Handler {
 	r := mux.NewRouter()
 
-	h := handler{podsvc}
+	h := handler{
+		podsvc: podsvc,
+		sorter: s,
+	}
 	r.HandleFunc("/pods/total", h.GetTotalPods).Methods("GET")
 
 	return r
