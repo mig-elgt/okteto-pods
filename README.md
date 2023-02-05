@@ -57,7 +57,7 @@ Query Parameters
 Example
 
 Request:
-GET https://pods-mig-elgt.assessment.jdm.okteto.net/pods?sort=age:desc,name:desc
+GET https://pods-mig-elgt.assessment.jdm.okteto.net/pods?sort=age:desc,name:asc
 
 Responses:
 
