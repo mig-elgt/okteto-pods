@@ -1,5 +1,7 @@
 package pods
 
+import "errors"
+
 // Pod describes a Kubernetes Pod resource.
 type Pod struct {
 	Name     string `json:"name"`
@@ -33,3 +35,7 @@ type Sorter interface {
 	// of fields values to get the order.
 	Sort(pods []*Pod, fields []FieldOrder) []*Pod
 }
+
+var (
+	ErrIncorrectSortValue = errors.New("Incorrect field order value, should be asc or desc.")
+)
