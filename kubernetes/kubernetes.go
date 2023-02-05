@@ -50,9 +50,17 @@ func (k *kubernetes) List(namespace string) ([]*pods.Pod, error) {
 		for _, cs := range pod.Status.ContainerStatuses {
 			containerRestars += cs.RestartCount
 		}
+		podStatus := "Running"
+		for _, condition := range pod.Status.Conditions {
+			if condition.Status != "True" {
+				podStatus = "Pending"
+				break
+			}
+		}
 		age := time.Since(pod.CreationTimestamp.Time).Round(time.Second)
 		result = append(result, &pods.Pod{
 			Name:     pod.Name,
+			Status:   podStatus,
 			Age:      age,
 			Restarts: containerRestars,
 		})
