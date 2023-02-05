@@ -4,8 +4,8 @@ package pods
 type Pod struct {
 	Name     string `json:"name"`
 	Status   string `json:"status"`
-	Restarts int    `json:"restarts"`
-	Age      int32  `json:"age"`
+	Restarts int32  `json:"restarts"`
+	Age      int64  `json:"age"`
 }
 
 // PodLister describes the behavior to perform PODs operations

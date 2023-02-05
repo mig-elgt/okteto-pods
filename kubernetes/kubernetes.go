@@ -2,6 +2,7 @@ package kubernetes
 
 import (
 	"context"
+	"time"
 
 	pods "github.com/mig-elgt/okteto-pods"
 	"github.com/pkg/errors"
@@ -39,5 +40,23 @@ func (k *kubernetes) Total(namespace string) (int, error) {
 
 // List gets a set of Pods objects given a namespace.
 func (k *kubernetes) List(namespace string) ([]*pods.Pod, error) {
-	panic("not implemented") // TODO: Implement
+	podsList, err := k.client.CoreV1().Pods("mig-elgt").List(context.TODO(), metav1.ListOptions{})
+	if err != nil {
+		return nil, errors.Wrap(err, "could not list pods")
+	}
+	var result []*pods.Pod
+	for _, pod := range podsList.Items {
+		var containerRestars int32
+		for _, cs := range pod.Status.ContainerStatuses {
+			containerRestars += cs.RestartCount
+		}
+		age := time.Since(pod.CreationTimestamp.Time).Round(time.Second)
+		result = append(result, &pods.Pod{
+			Name:     pod.Name,
+			Age:      age.Milliseconds(),
+			Status:   pod.Status.String(),
+			Restarts: containerRestars,
+		})
+	}
+	return result, nil
 }
