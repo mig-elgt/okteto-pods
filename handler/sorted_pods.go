@@ -21,11 +21,11 @@ type response struct {
 	Pods   []pod `json:"pods"`
 }
 
-// GET /pods?sort=foo:asc,bar:desc
+// GetSortedPods represents a handle for the request GET /pods?sort=name:asc,restarts:desc,age:asc
 func (h handler) GetSortedPods(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query().Get("sort")
 	var sortFields []pods.FieldOrder
-	if len(q) != 0 {
+	if len(q) > 0 {
 		res, err := h.validateSortParameter(r)
 		if err != nil {
 			sender.

@@ -9,9 +9,9 @@ import (
 
 func TestSort(t *testing.T) {
 	testCases := map[string]struct {
-		pods []*pods.Pod
-		by   []pods.FieldOrder
-		want []*pods.Pod
+		pods   []*pods.Pod
+		fields []pods.FieldOrder
+		want   []*pods.Pod
 	}{
 		"without fields to sort": {
 			pods: []*pods.Pod{
@@ -22,7 +22,7 @@ func TestSort(t *testing.T) {
 					Name: "bar",
 				},
 			},
-			by: []pods.FieldOrder{},
+			fields: []pods.FieldOrder{},
 			want: []*pods.Pod{
 				{
 					Name: "foo",
@@ -32,7 +32,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by name asc": {
+		"sort fields name asc": {
 			pods: []*pods.Pod{
 				{
 					Name: "foo",
@@ -41,7 +41,7 @@ func TestSort(t *testing.T) {
 					Name: "bar",
 				},
 			},
-			by: []pods.FieldOrder{{Field: "name", Order: "asc"}},
+			fields: []pods.FieldOrder{{Field: "name", Order: "asc"}},
 			want: []*pods.Pod{
 				{
 					Name: "bar",
@@ -51,7 +51,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by name and restarts asc": {
+		"sort fields name and restarts asc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "foo",
@@ -62,7 +62,7 @@ func TestSort(t *testing.T) {
 					Restarts: 5,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "name", Order: "asc"},
 				{Field: "restarts", Order: "asc"},
 			},
@@ -77,7 +77,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by name, restarts, and age asc": {
+		"sort fields name, restarts, and age asc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "foo",
@@ -103,7 +103,7 @@ func TestSort(t *testing.T) {
 					Restarts: 20,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "name", Order: "asc"},
 				{Field: "restarts", Order: "asc"},
 				{Field: "age", Order: "asc"},
@@ -134,7 +134,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by age, restarts, name asc": {
+		"sort fields age, restarts, name asc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "bb",
@@ -162,7 +162,7 @@ func TestSort(t *testing.T) {
 					Age:      5,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "age", Order: "asc"},
 				{Field: "restarts", Order: "asc"},
 				{Field: "name", Order: "asc"},
@@ -195,7 +195,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by name desc": {
+		"sort fields name desc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "foo",
@@ -213,7 +213,7 @@ func TestSort(t *testing.T) {
 					Age:      4,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "name", Order: "desc"},
 			},
 			want: []*pods.Pod{
@@ -234,7 +234,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by name and restarts desc": {
+		"sort fields name and restarts desc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "foo",
@@ -252,7 +252,7 @@ func TestSort(t *testing.T) {
 					Age:      4,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "name", Order: "desc"},
 				{Field: "restarts", Order: "desc"},
 			},
@@ -274,7 +274,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by restarts, age and name desc": {
+		"sort fields restarts, age and name desc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "foo",
@@ -307,7 +307,7 @@ func TestSort(t *testing.T) {
 					Age:      50,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "restarts", Order: "desc"},
 				{Field: "age", Order: "desc"},
 				{Field: "name", Order: "desc"},
@@ -345,7 +345,7 @@ func TestSort(t *testing.T) {
 				},
 			},
 		},
-		"sort by restarts desc and age asc": {
+		"sort fields restarts desc and age asc": {
 			pods: []*pods.Pod{
 				{
 					Name:     "foo",
@@ -363,7 +363,7 @@ func TestSort(t *testing.T) {
 					Age:      1,
 				},
 			},
-			by: []pods.FieldOrder{
+			fields: []pods.FieldOrder{
 				{Field: "restarts", Order: "desc"},
 				{Field: "age", Order: "asc"},
 			},
@@ -390,8 +390,8 @@ func TestSort(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(name, func(t *testing.T) {
 			s := sort{}
-			if got := s.Sort(tc.pods, tc.by); !reflect.DeepEqual(got, tc.want) {
-				t.Fatalf("Sort(pods, by) got %v; want %v", got, tc.want)
+			if got := s.Sort(tc.pods, tc.fields); !reflect.DeepEqual(got, tc.want) {
+				t.Fatalf("Sort(pods, fields) got %v; want %v", got, tc.want)
 			}
 		})
 	}
