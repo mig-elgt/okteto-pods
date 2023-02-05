@@ -20,8 +20,7 @@ func (h handler) GetTotalPods(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	type response struct {
-		Status int `json:"status"`
-		Total  int `json:"total"`
+		Total int `json:"total"`
 	}
-	sender.NewJSON(w, http.StatusOK).Send(&response{Status: 200, Total: pods})
+	sender.NewJSON(w, http.StatusOK).Send(&response{Total: pods})
 }

@@ -35,7 +35,7 @@ func TestHandlerGetTotalPods(t *testing.T) {
 				},
 			},
 			wantStatusCode: http.StatusOK,
-			wantResponse:   []byte("{\"status\":200,\"total\":100}\n"),
+			wantResponse:   []byte("{\"total\":100}\n"),
 		},
 	}
 	for name, tc := range testCases {
