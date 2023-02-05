@@ -7,6 +7,7 @@ import (
 
 	"github.com/mig-elgt/okteto-pods/handler"
 	"github.com/mig-elgt/okteto-pods/kubernetes"
+	"github.com/mig-elgt/okteto-pods/sort"
 	"github.com/sirupsen/logrus"
 )
 
@@ -18,7 +19,7 @@ func main() {
 	if err != nil {
 		logrus.Fatalf("could not create kubernetes client: %v", err)
 	}
-	h := handler.New(k8s)
+	h := handler.New(k8s, sort.New())
 
 	fmt.Println("Server running al localhost: ", *port)
 	if err := http.ListenAndServe(fmt.Sprintf(":%d", *port), h); err != nil {

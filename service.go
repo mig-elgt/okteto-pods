@@ -1,13 +1,16 @@
 package pods
 
-import "errors"
+import (
+	"errors"
+	"time"
+)
 
 // Pod describes a Kubernetes Pod resource.
 type Pod struct {
-	Name     string `json:"name"`
-	Status   string `json:"status"`
-	Restarts int32  `json:"restarts"`
-	Age      int64  `json:"age"`
+	Name     string
+	Status   string
+	Restarts int32
+	Age      time.Duration
 }
 
 // PodLister describes the behavior to perform PODs operations

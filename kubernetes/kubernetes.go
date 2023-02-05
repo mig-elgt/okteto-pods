@@ -53,8 +53,7 @@ func (k *kubernetes) List(namespace string) ([]*pods.Pod, error) {
 		age := time.Since(pod.CreationTimestamp.Time).Round(time.Second)
 		result = append(result, &pods.Pod{
 			Name:     pod.Name,
-			Age:      age.Milliseconds(),
-			Status:   pod.Status.String(),
+			Age:      age,
 			Restarts: containerRestars,
 		})
 	}

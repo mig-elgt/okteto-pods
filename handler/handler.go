@@ -14,14 +14,10 @@ type handler struct {
 }
 
 // New creates a new HTTP Handler
-func New(podsvc pods.PodLister, s pods.Sorter) http.Handler {
+func New(podsvc pods.PodLister, sorter pods.Sorter) http.Handler {
 	r := mux.NewRouter()
-
-	h := handler{
-		podsvc: podsvc,
-		sorter: s,
-	}
+	h := handler{podsvc, sorter}
 	r.HandleFunc("/pods/total", h.GetTotalPods).Methods("GET")
-
+	r.HandleFunc("/pods", h.GetSortedPods).Methods("GET")
 	return r
 }
