@@ -27,7 +27,7 @@ func (h handler) GetSortedPods(w http.ResponseWriter, r *http.Request) {
 	q := r.URL.Query().Get("sort")
 	var sortFields []pods.FieldOrder
 	if len(q) > 0 {
-		res, err := h.validateSortParameter(r)
+		res, err := h.validateSortParameter(r, q)
 		if err != nil {
 			sender.
 				NewJSON(w, http.StatusBadRequest).
@@ -62,22 +62,21 @@ func (h handler) GetSortedPods(w http.ResponseWriter, r *http.Request) {
 	})
 }
 
-func (h handler) validateSortParameter(r *http.Request) ([]pods.FieldOrder, error) {
-	q := r.URL.Query().Get("sort")
+func (h handler) validateSortParameter(r *http.Request, query string) ([]pods.FieldOrder, error) {
 	var sortFields []pods.FieldOrder
-	fields := strings.Split(q, ",")
+	fields := strings.Split(query, ",")
 	for _, pair := range fields {
 		field := strings.Split(pair, ":")
 		if len(field) != 2 {
-			logrus.Errorf("sort query bad format: %v", q)
+			logrus.Errorf("sort query bad format: %v", query)
 			return nil, pods.ErrIncorrectSortValue
 		}
 		if field[0] != "name" && field[0] != "restarts" && field[0] != "age" {
-			logrus.Errorf("sort field incorrect value: %v", q)
+			logrus.Errorf("sort field incorrect value: %v", query)
 			return nil, pods.ErrIncorrectSortValue
 		}
 		if field[1] != "asc" && field[1] != "desc" {
-			logrus.Errorf("sort field order incorrect value: %v", q)
+			logrus.Errorf("sort field order incorrect value: %v", query)
 			return nil, pods.ErrIncorrectSortValue
 		}
 		sortFields = append(sortFields, pods.FieldOrder{Field: field[0], Order: field[1]})

@@ -40,7 +40,7 @@ func main() {
 		close(idleConnsClosed)
 	}()
 
-	log.Infof("Server running al localhost: %v", *port)
+	log.Infof("Server running at localhost: %v", *port)
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
 		log.Fatalf("HTTP server ListenAndServe: %v", err)
 	}
